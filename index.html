@@ -270,7 +270,6 @@
 
             const li = document.createElement('li');
             li.dataset.datetime = datetime;
-
             li.dataset.tags = tags.join(',').toLowerCase();
 
             const content = document.createElement('div');
@@ -313,11 +312,11 @@
                 const currentTags = tags.map(t => t).join(', ');
 
                 content.innerHTML = `
-        <input type="text" value="${currentTask}" class="tag-input" id="editTaskInput" style="margin-bottom: 8px;" />
-        <input type="text" id="editDateInput" class="tag-input" placeholder="Select date & time" style="margin-bottom: 8px;" />
-        <input type="text" value="${currentTags}" class="tag-input" id="editTagsInput" placeholder="Tags (comma-separated)" />
-        <button id="saveEditBtn" style="margin-top: 10px; padding: 6px 10px; font-size: 0.85rem; background: #00ff7f; color: #000; border-radius: 6px; border: none;">Save</button>
-    `;
+            <input type="text" value="${currentTask}" class="tag-input" id="editTaskInput" style="margin-bottom: 8px;" />
+            <input type="text" id="editDateInput" class="tag-input" placeholder="Select date & time" style="margin-bottom: 8px;" />
+            <input type="text" value="${currentTags}" class="tag-input" id="editTagsInput" placeholder="Tags (comma-separated)" />
+            <button id="saveEditBtn" style="margin-top: 10px; padding: 6px 10px; font-size: 0.85rem; background: #00ff7f; color: #000; border-radius: 6px; border: none;">Save</button>
+        `;
 
                 setTimeout(() => {
                     const editPicker = flatpickr("#editDateInput", {
@@ -337,23 +336,20 @@
                 };
             };
 
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteBtn.onclick = () => li.remove();
 
-        };
+            actions.append(completeBtn, editBtn, deleteBtn);
+            li.append(content, actions);
+            taskList.appendChild(li);
+            document.getElementById('filterContainer').style.display = 'block';
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteBtn.onclick = () => li.remove();
-
-        actions.append(completeBtn, editBtn, deleteBtn);
-        li.append(content, actions);
-        taskList.appendChild(li);
-        document.getElementById('filterContainer').style.display = 'block';
-
-
-        taskInput.value = '';
-        datetimeInput.value = '';
-        tagsInput.value = '';
-
+            // Clear inputs
+            taskInput.value = '';
+            datetimeInput.value = '';
+            tagsInput.value = '';
+        }
 
         function updateFilterOptions(tag) {
             tag = tag.trim();
